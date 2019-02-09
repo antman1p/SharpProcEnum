@@ -46,7 +46,46 @@ namespace MemEnum
         //Main FUnction calls the menu() function
         static void Main(string[] args)
         {
-            menu();
+            //Check for fast track args
+            if(args.Length != 0){
+                int fast_track_selection;
+                fast_track_selection = Convert.ToInt32(args[0]);
+                switch(fast_track_selection){
+                    case 1:
+                        ProcList();
+                        break;
+                    case 2:
+                        ThreadList();
+                        break;
+                    case 3:
+                        ModList();
+                        break;
+                    case 4:
+                        MemInfo();
+                        break;
+                    case 5:
+                        MemDump();
+                            break;
+                    case 6:
+                        Console.WriteLine("Fast track options");
+                        Console.WriteLine(
+                "\n1. List Processes" +
+                "\n2. List Threads of a process" +
+                "\n3. List Modules of a process" +
+                "\n4. Process memory protection Information" +
+                "\n5. Dump Process memory" +
+                "\n6. Help\n");
+                        break;
+                
+                    default:
+                        Console.WriteLine("Not a fast trak option. For help run the program with the 6 argument");
+                        menu();
+                        break;
+            }
+        }
+            else{
+                menu();
+            }
             
         }
 
