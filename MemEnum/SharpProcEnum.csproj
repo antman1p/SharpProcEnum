@@ -7,8 +7,8 @@
     <ProjectGuid>{97A3FEF8-6651-41D6-B95F-71D678241EAE}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MemEnum</RootNamespace>
-    <AssemblyName>MemEnum</AssemblyName>
+    <RootNamespace>SharpProcEnum</RootNamespace>
+    <AssemblyName>SharpProcEnum</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
