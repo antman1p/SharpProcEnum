@@ -4,13 +4,13 @@
  * Twitter @antman1p
  * 2/12/2019
  * 
- * Create a program in any programming language of choice that can:
+ *  Program in C# that:
  *
- * 1.  Enumerate all the running processes.
- * 2.  List all the running threads within process boundary.
+ * 1.  List all running processes.
+ * 2.  List all  running threads within a selected process boundary.
  * 3.  Enumerate all the loaded modules within the processes.
- * 4.  Is able to show all the executable pages within the processes.
- * 5.  Gives us a capability to read the memory.
+ * 4.  Show all the executable pages within the processes.
+ * 5.  Read  memory.
  *
  *
  * 
@@ -27,6 +27,9 @@
  *             https://docs.microsoft.com/en-us/windows/desktop/Memory/memory-protection-constants
  *             https://docs.microsoft.com/en-us/windows/desktop/debug/system-error-codes--0-499-
  *             https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_memory_basic_information
+ *             
+ *             HIGHLY influenced by Matt Graeber's (@mattifestation) Powershell Arsenal MemoryTools.ps1
+ *             https://github.com/mattifestation/PowerShellArsenal/blob/master/MemoryTools/MemoryTools.ps1
  * 
  * 
  * INSTRUCTIONS:  Use a 64 bit WIndows system.  For BEST results, run as an administrator.  Build using visual studio.
