@@ -49,25 +49,57 @@ namespace SharpProcEnum
         //Main FUnction looks at commandline args and calls the coresponding funciton
         static void Main(string[] args)
         {
-            //Check for fast track args
             if(args.Length != 0){
-                string fast_track_selection = args[0];
-                switch(fast_track_selection){
+                string selection = args[0];
+                switch (selection) {
                     case "-proclist":
                         ProcList();
                         break;
                     case "-threadlist":
-                        ThreadList();
+                        if (args.Length < 2)
+                        {
+                            Console.WriteLine("\nNot enough arguments entered.");
+                            help();
+                        }
+                        else
+                        {
+                            ThreadList(args[1]);
+                        }
                         break;
                     case "-modlist":
-                        ModList();
+                        if (args.Length < 2)
+                        {
+                            Console.WriteLine("\nNot enough arguments entered.");
+                            help();
+                        }
+                        else
+                        {
+                            ModList(args[1]);
+                        }
                         break;
                     case "-meminfo":
-                        MemInfo();
-                        break;
+                        if (args.Length < 3)
+                        {
+                            Console.WriteLine("\nNot enough arguments entered.");
+                            help();
+                        }
+                        else
+                        {
+                            MemInfo(args[1], args[2]);
+                        }
+                        break;                      
                     case "-memdump":
-                        MemDump();
+                        if (args.Length < 3)
+                        {
+                            Console.WriteLine("\nNot enough arguments entered.");
+                            help();
+                        }
+                        else
+                        {
+                            MemDump(args[1], args[2]);
+                        }
                         break;
+                        
                     case "-help":
                         help();
                         break;        
@@ -76,11 +108,11 @@ namespace SharpProcEnum
                         help();
                         break;
                 }
-        }
-        else
-            {
-                help();
             }
+            else
+                {
+                    help();
+                }
             Console.ReadLine();
 
         }
@@ -88,79 +120,17 @@ namespace SharpProcEnum
         // The Menu function displays the menu to the console and takes user input to call the corresponding function
         public static void help()
         {
-            string selection;
-            int selectInt;
 
             // Write Menu to console
-            Console.WriteLine("\nUsage: MemEnum.exe [options]" +
-                "\n-proclist    " +
-                "\n-threadlist  " +
-                "\n-modlist " +
-                "\n-memdump " +
-                "\n-help    " +
+            Console.WriteLine("\nUsage: MemEnum.exe [options]\n" +
+                "\n-proclist\t\t\tLists running processes on the system" +
+                "\n-threadlist <pid>\t\tLists threads running on a given preocess" +
+                "\n-modlist <pid>\t\t\tLists loaded modules and their addresses for a given process" +
+                "\n-memdump <pid> <Base Address>\tOutputs the memory of a given module page" +
+                "\n-help\t\t\t\tPrints this usage page" +
                 "\n");
-
-            // Get user input
-            selection = Console.ReadLine();
-
-            // Check to make sure input is an integer
-            try
-            {
-                selectInt = Convert.ToInt32(selection);
-               
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine("Input not an integer.  Please try again");
-                help();
-                selectInt = 0;
-            }
-
-            // Make sure the integer is 1-6
-            if (selectInt < 1 || selectInt > 6)
-            {
-                Console.WriteLine("Input must be 1-5.  Please try again");
-                help();
-            }
-
-            // Switch to call the coresponding function based on user input as case
-            else
-            {
-                switch(selectInt)
-                {
-                    case 1:
-                        // Call the process listing function
-                        ProcList();
-                        break;
-                    // Call the thread listing function
-                    case 2:
-                        ThreadList();
-                        break;
-                    // Call the Module listing function
-                    case 3:
-                        ModList();
-                        break;
-                    // Call the memory protection check function
-                    case 4:
-                        MemInfo();
-                        break;
-                    // Call the memory dumping function
-                    case 5:
-                        MemDump();
-                        break;
-                    // Call the program exit function to quit the program
-                    case 6:
-                        Environment.Exit(0);
-                        break;
-                    default:
-                        break;
-
-                }
-            }
-
-
-
         }
+
         // Function to list the processes
         public static void ProcList()
         {
@@ -170,21 +140,14 @@ namespace SharpProcEnum
             {
                 // Print the proc ID and Name
                 Console.WriteLine("\nProcess: {0} PID: {1}", process.ProcessName, process.Id);
-              
             }
-
         }
 
 
         // Function to list the threads of a process by PID
-        public static void ThreadList()
+        public static void ThreadList(string pidString)
         {
             int pid;
-            string pidString;
-
-            // Prompt user for PID input
-            Console.WriteLine("\nInput the Process Id to list its running threads:");
-            pidString = Console.ReadLine();
 
             // Check to make sure the input is an integer
             try
@@ -226,16 +189,9 @@ namespace SharpProcEnum
         }
 
         // Fucntion that lists the modules for a user selected process
-        public static void ModList()
+        public static void ModList(string pidString)
         {
             int pid;
-            string pidString;
-
-            // Prompt user for the process ID of the process they want the modules listed for
-            Console.WriteLine("\nInput the Process Id to list its modules:");
-
-            // Get user input
-            pidString = Console.ReadLine();
 
             // Ensure the input is an integer
             try
@@ -279,18 +235,10 @@ namespace SharpProcEnum
 
 
         // Function that checks the Access protection level of a memory location
-        public static void MemInfo()
+        public static void MemInfo(string pidString, string memAddrStr)
         {
             int pid;
-            string pidString;
             uint pageSize = 0x1000;
-            string memAddrStr;
-
-            // Prompt fo user input of the pid of the process that contains the loaded module that the user wants protection info for
-            Console.WriteLine("\nInput the Process Id for the module you want the protection information for:");
-
-            // Get user input for the pid
-            pidString = Console.ReadLine();
 
             // ensure the input is an integer
             try
@@ -319,11 +267,6 @@ namespace SharpProcEnum
                 help();
             }
 
-            // Prompt user for memory address in hex of the module the user wants protection info for
-            Console.WriteLine("\nInput the module base memory address in hex format (0x7ff...) to list protection Information:");
-
-            // get user input address
-            memAddrStr = Console.ReadLine();
             
             // ensure that the user entered a hex address
             try
@@ -368,11 +311,8 @@ namespace SharpProcEnum
 
 
         // Function dumps the contents of the memory requested by  the user to console
-        public static void MemDump()
+        public static void MemDump(string pidString, string memAddrStr)
         {
-
-            string memAddrStr;
-            string pidString;
 
             int buffWidth = 16;
             int pid;
@@ -382,12 +322,6 @@ namespace SharpProcEnum
             Int64 baseAddr;
             var byteArray = new byte[offset];
 
-
-            // Prompt user to input the Process ID of the process that contains the loaded module for which they want to dump the memory
-            Console.WriteLine("\nInput the Process Id to view the memory:");
-
-            // get the user input process id
-            pidString = Console.ReadLine();
             // Ensure the input pid is an integer
             try
             {
@@ -413,12 +347,6 @@ namespace SharpProcEnum
                 Console.WriteLine("Not a valid process. \nError: {0}", ex);
                 help();
             }
-
-            // Prompt user to input the memory address in hex of the module they want to dup the memory for
-            Console.WriteLine("\nInput the module base memory address in hex format (0x7ff...) to dump the module memory:");
-
-            // get the user input memory address
-            memAddrStr = Console.ReadLine();
 
             // Ensure the input is a memory address in hex
             try
