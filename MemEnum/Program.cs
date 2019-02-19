@@ -46,7 +46,7 @@ namespace SharpProcEnum
 {
     class Program
     {
-        //Main FUnction calls the menu() function
+        //Main FUnction looks at commandline args and calls the coresponding funciton
         static void Main(string[] args)
         {
             //Check for fast track args
@@ -72,15 +72,17 @@ namespace SharpProcEnum
                         help();
                         break;        
                     default:
-                        Console.WriteLine(args[0] + " not a valid option. For help use -help\n");
+                        Console.WriteLine(args[0] + " not a valid option. For help use the -help option\n");
                         help();
                         break;
-            }
+                }
         }
-            else{
+        else
+            {
                 help();
             }
-            
+            Console.ReadLine();
+
         }
 
         // The Menu function displays the menu to the console and takes user input to call the corresponding function
@@ -90,13 +92,13 @@ namespace SharpProcEnum
             int selectInt;
 
             // Write Menu to console
-            Console.WriteLine("\nInput number for your selection: " +
-                "\n1. List Processes" +
-                "\n2. List Threads of a process" +
-                "\n3. List Modules of a process" +
-                "\n4. Process memory protection Information" +
-                "\n5. Dump Process memory" +
-                "\n6. Quit\n");
+            Console.WriteLine("\nUsage: MemEnum.exe [options]" +
+                "\n-proclist    " +
+                "\n-threadlist  " +
+                "\n-modlist " +
+                "\n-memdump " +
+                "\n-help    " +
+                "\n");
 
             // Get user input
             selection = Console.ReadLine();
@@ -110,7 +112,7 @@ namespace SharpProcEnum
             catch(Exception ex)
             {
                 Console.WriteLine("Input not an integer.  Please try again");
-                menu();
+                help();
                 selectInt = 0;
             }
 
@@ -118,7 +120,7 @@ namespace SharpProcEnum
             if (selectInt < 1 || selectInt > 6)
             {
                 Console.WriteLine("Input must be 1-5.  Please try again");
-                menu();
+                help();
             }
 
             // Switch to call the coresponding function based on user input as case
@@ -170,8 +172,6 @@ namespace SharpProcEnum
                 Console.WriteLine("\nProcess: {0} PID: {1}", process.ProcessName, process.Id);
               
             }
-            // Call the menu funciton again to return to the menu
-            menu();
 
         }
 
@@ -192,11 +192,11 @@ namespace SharpProcEnum
                 pid = Convert.ToInt32(pidString);
 
             }
-            // If not call the menu() funciton to return to the menu
+            // If not call the help() funciton to return to the menu
             catch (Exception ex)
             {
                 Console.WriteLine("Input not an integer.  Please try again");
-                menu();
+                help();
                 pid = 0;
             }
 
@@ -217,14 +217,12 @@ namespace SharpProcEnum
                 }
 
             }
-            // If it fails call the menu() function to return to the menu and alert the user to the failure
+            // If it fails call the help() function to return to the menu and alert the user to the failure
             catch(Exception ex)
             {
                 Console.WriteLine("No Process Found with that Process ID. \nError: {0}", ex);
-                menu();
+                help();
             }
-            // return to th menu
-            menu();
         }
 
         // Fucntion that lists the modules for a user selected process
@@ -245,11 +243,11 @@ namespace SharpProcEnum
                 pid = Convert.ToInt32(pidString);
 
             }
-            // If not return to the menu and alert the user
+            // If not got to the help and alert the user
             catch (Exception ex)
             {
                 Console.WriteLine("Input not an integer.  Please try again");
-                menu();
+                help();
                 pid = 0;
             }
 
@@ -271,15 +269,12 @@ namespace SharpProcEnum
                     Console.WriteLine("File Name: {0}  Base Address: 0x{1}", procMod.FileName, procMod.BaseAddress.ToString("X"));
                 }
             }
-            // If it fails alert the user and return to the menu
+            // If it fails alert the user and go to the help
             catch(Exception ex)
             {
                 Console.WriteLine("No Process Found with that Process ID. \nError: {0}", ex);
-                menu();
+                help();
             }
-
-            // return to the menu
-            menu();
         }
 
 
@@ -308,7 +303,7 @@ namespace SharpProcEnum
             catch (Exception ex)
             {
                 Console.WriteLine("Input not an integer.  Please try again");
-                menu();
+                help();
                 pid = 0;
             }
 
@@ -317,11 +312,11 @@ namespace SharpProcEnum
             {
                 Process proc = Process.GetProcessById(pid);
             }
-            // If not return to the menu an dinform the user
+            // If not go to the help an dinform the user
             catch (Exception ex)
             {
                 Console.WriteLine("Not a valid process. \nError: {0}", ex);
-                menu();
+                help();
             }
 
             // Prompt user for memory address in hex of the module the user wants protection info for
@@ -335,11 +330,11 @@ namespace SharpProcEnum
             {
                 Convert.ToInt64(memAddrStr, 16);
             }
-            // If not alert the user and returnt o the menu
+            // If not alert the user and go to the help
             catch(Exception ex)
             {
                 Console.WriteLine("Invalid Memory address format.  Must be in hex, 0x... format.  Error: {0}", ex);
-                menu();
+                help();
             }
 
             // Create a new pointer from converting the user input string to a 64 bit integer 
@@ -363,15 +358,12 @@ namespace SharpProcEnum
                 // Write the Memory protection information string to the console 
                 Console.WriteLine("\nProtection Information: {0}", memProtectConstStr);
             }
-            // Or else return to the menu and alert the user of the failure
+            // Or else go to the help and alert the user of the failure
             catch(Exception ex)
             {
                 Console.WriteLine("\nFailed to Open memory location.  \nError: {0}", ex);
-                menu();
+                help();
             }
-
-            // Return to the menu
-            menu();
         }
 
 
@@ -402,11 +394,11 @@ namespace SharpProcEnum
                 pid = Convert.ToInt32(pidString);
 
             }
-            // If not return to the menu and alert the user
+            // If not go to the help and alert the user
             catch (Exception ex)
             {
                 Console.WriteLine("\nInput not an integer.  Please try again");
-                menu();
+                help();
                 pid = 0;
             }
 
@@ -415,11 +407,11 @@ namespace SharpProcEnum
             {
                 Process proc = Process.GetProcessById(pid);
             }
-            // If not return to the menu an dinform the user
+            // If not go to the help an dinform the user
             catch(Exception ex)
             {
                 Console.WriteLine("Not a valid process. \nError: {0}", ex);
-                menu();
+                help();
             }
 
             // Prompt user to input the memory address in hex of the module they want to dup the memory for
@@ -433,11 +425,11 @@ namespace SharpProcEnum
             {
                 Convert.ToInt64(memAddrStr, 16);
             }
-            // if not return to the menu and alert the user
+            // if not go to the help and alert the user
             catch (Exception ex)
             {
                 Console.WriteLine("\nInvalid Memory address format.  Must be in hex, 0x... format.  \nError: {0}", ex);
-                menu();
+                help();
             }
 
             // Create a new pointer from converting the user input string to a 64 bit integer 
@@ -454,11 +446,11 @@ namespace SharpProcEnum
                 ReadProcessMemory(pHandle, base_mem_address, byteArray, offset, ref bytesRead);
 
             }
-            // If it fails, return to the menu and alert the user
+            // If it fails, go to help and alert the user
             catch(Exception ex)
             {
                 Console.WriteLine("Unable to dump memory.  \nError: {0}", ex);
-                menu();
+                help();
             }
 
             int position = 0;
@@ -496,9 +488,6 @@ namespace SharpProcEnum
                 Console.WriteLine(line);
 
             }
-
-            // Return to the menu
-            menu();
         }
 
         // Function Converts Memory Protection Constant to its coresponding string value:
