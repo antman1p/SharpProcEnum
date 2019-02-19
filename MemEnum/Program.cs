@@ -51,49 +51,40 @@ namespace SharpProcEnum
         {
             //Check for fast track args
             if(args.Length != 0){
-                int fast_track_selection;
-                fast_track_selection = Convert.ToInt32(args[0]);
+                string fast_track_selection = args[0];
                 switch(fast_track_selection){
-                    case 1:
+                    case "-proclist":
                         ProcList();
                         break;
-                    case 2:
+                    case "-threadlist":
                         ThreadList();
                         break;
-                    case 3:
+                    case "-modlist":
                         ModList();
                         break;
-                    case 4:
+                    case "-meminfo":
                         MemInfo();
                         break;
-                    case 5:
+                    case "-memdump":
                         MemDump();
-                            break;
-                    case 6:
-                        Console.WriteLine("Fast track options");
-                        Console.WriteLine(
-                "\n1. List Processes" +
-                "\n2. List Threads of a process" +
-                "\n3. List Modules of a process" +
-                "\n4. Process memory protection Information" +
-                "\n5. Dump Process memory" +
-                "\n6. Help\n");
                         break;
-                
+                    case "-help":
+                        help();
+                        break;        
                     default:
-                        Console.WriteLine("Not a fast trak option. For help run the program with the 6 argument");
-                        menu();
+                        Console.WriteLine(args[0] + " not a valid option. For help use -help\n");
+                        help();
                         break;
             }
         }
             else{
-                menu();
+                help();
             }
             
         }
 
         // The Menu function displays the menu to the console and takes user input to call the corresponding function
-        public static void menu()
+        public static void help()
         {
             string selection;
             int selectInt;
