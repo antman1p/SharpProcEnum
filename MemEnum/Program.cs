@@ -126,6 +126,7 @@ namespace SharpProcEnum
                 "\n-proclist\t\t\tLists running processes on the system" +
                 "\n-threadlist <pid>\t\tLists threads running on a given preocess" +
                 "\n-modlist <pid>\t\t\tLists loaded modules and their addresses for a given process" +
+                "\n-meminfo <pid> <Base Address>\tOutput the memory access protection level for a given module page" +
                 "\n-memdump <pid> <Base Address>\tOutputs the memory of a given module page" +
                 "\n-help\t\t\t\tPrints this usage page" +
                 "\n");
